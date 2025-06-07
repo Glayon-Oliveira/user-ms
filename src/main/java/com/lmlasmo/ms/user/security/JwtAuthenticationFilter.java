@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.lmlasmo.ms.user.dto.auth.UserAuthDTO;
 import com.lmlasmo.ms.user.model.UserStatusType;
 import com.lmlasmo.ms.user.repository.UserRepository;
 import com.lmlasmo.ms.user.security.token.AccessJWTProvider;
@@ -37,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	protected void authenticate(String token) {
-		UserAuthDTO user = jwtProvider.validateAccessDTO(token);
+		UserAuth user = jwtProvider.validateAccessToken(token);
 
 		if(!userRepository.existsByIdAndStatus(user.idToBigInteger(), UserStatusType.ACTIVE)) return;
 

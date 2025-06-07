@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lmlasmo.ms.user.dto.FullUserDTO;
 import com.lmlasmo.ms.user.dto.auth.LoginDTO;
+import com.lmlasmo.ms.user.dto.register.SignupDTO;
 import com.lmlasmo.ms.user.dto.token.JWTTokenDTO;
 import com.lmlasmo.ms.user.model.User;
 import com.lmlasmo.ms.user.security.token.RefleshJWTProvider;
+import com.lmlasmo.ms.user.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ public class SignController {
 
 	private AuthenticationManager manager;
 	private RefleshJWTProvider refleshProvider;
+	private UserService userService;
 
 	@PostMapping("/in")
 	@ResponseStatus(code = HttpStatus.OK)
@@ -38,6 +42,12 @@ public class SignController {
 
 		String token = refleshProvider.gerateRefleshToken(user);
 		return new JWTTokenDTO(token);
+	}
+
+	@PostMapping("/up")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public FullUserDTO up(@RequestBody @Valid SignupDTO signup) {
+		return userService.save(signup);
 	}
 
 }

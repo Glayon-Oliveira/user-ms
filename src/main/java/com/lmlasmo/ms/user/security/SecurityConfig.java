@@ -26,7 +26,8 @@ public class SecurityConfig {
 				.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(a -> a
 						.requestMatchers("/api/sign/**", "/api/jwt/**").permitAll()
-						.requestMatchers("/api/**").authenticated())
+						.requestMatchers("/api/**").authenticated()
+						.anyRequest().denyAll())
 				.addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
 				.build();
 	}

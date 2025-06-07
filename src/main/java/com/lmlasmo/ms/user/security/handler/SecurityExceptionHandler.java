@@ -4,13 +4,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lmlasmo.ms.user.dto.exception.ExceptionDTO;
 import com.lmlasmo.ms.user.exception.handler.util.ExceptionDTOFactory;
 
@@ -21,9 +21,9 @@ import jakarta.servlet.http.HttpServletRequest;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityExceptionHandler {
 
-	@ExceptionHandler(AuthenticationException.class)
+	@ExceptionHandler({AuthenticationException.class, JWTVerificationException.class})
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-	public ExceptionDTO handleUnauthorizedExceptions(BadCredentialsException exception, HttpServletRequest request){
+	public ExceptionDTO handleUnauthorizedExceptions(RuntimeException exception, HttpServletRequest request){
 		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.UNAUTHORIZED, request, exception);
 	}
 

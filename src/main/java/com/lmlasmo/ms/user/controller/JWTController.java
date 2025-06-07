@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lmlasmo.ms.user.dto.auth.UserAuthDTO;
 import com.lmlasmo.ms.user.dto.token.JWTAccessKeyComponentsDTO;
 import com.lmlasmo.ms.user.dto.token.JWTTokenDTO;
+import com.lmlasmo.ms.user.security.UserAuth;
 import com.lmlasmo.ms.user.security.token.AccessJWTProvider;
 import com.lmlasmo.ms.user.security.token.KeysProvider;
 import com.lmlasmo.ms.user.security.token.RefleshJWTProvider;
@@ -39,7 +39,7 @@ public class JWTController {
 	@GetMapping("/access")
 	@ResponseStatus(code = HttpStatus.OK)
 	public JWTTokenDTO verifyReflesh(@RequestBody @Valid JWTTokenDTO refleshToken) {
-		UserAuthDTO userAuth = refleshProvider.validateRefleshToken(refleshToken.getJwtToken());
+		UserAuth userAuth = refleshProvider.validateRefleshToken(refleshToken.getJwtToken());
 		String token = accessProvider.gerateAccessToken(userAuth);
 		return new JWTTokenDTO(token);
 	}

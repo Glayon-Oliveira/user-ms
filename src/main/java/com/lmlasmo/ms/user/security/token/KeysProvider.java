@@ -13,7 +13,7 @@ public abstract class KeysProvider {
 		try {
 			updateKeys();
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 	}
 
